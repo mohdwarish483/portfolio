@@ -11,6 +11,11 @@
   text-decoration: none;
 }
 
+head:link[rel="shortcut icon"] {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
 :root {
   --normal-font: 2rem;
   --large-font: 2.5rem;
