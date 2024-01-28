@@ -644,28 +644,28 @@ a.btn:nth-child(2)::before {
 
 /* progress bar animation and hovering */
 
-.technical-skills-info .bar .html {
-  width: 88%;
-  animation: html 6s ease-in-out;
-}
-.technical-skills-info .bar .css {
-  width: 82%;
-  animation: css 6s ease-in-out;
-}
 .technical-skills-info .bar .react {
-  width: 78%;
+  width: 95%;
   animation: react 6s ease-in-out;
 }
 .technical-skills-info .bar .node {
-  width: 85%;
+  width: 90%;
   animation: node 6s ease-in-out;
+}
+.technical-skills-info .bar .sql {
+  width: 78%;
+  animation: sql 6s ease-in-out;
+}
+.technical-skills-info .bar .python {
+  width: 80%;
+  animation: python 6s ease-in-out;
 }
 .technical-skills-info .bar .cpp {
   width: 90%;
   animation: cpp 6s ease-in-out;
 }
-.technical-skills-info .bar .python {
-  width: 70%;
+.technical-skills-info .bar .java {
+  width: 85%;
   animation: java 6s ease-in-out;
 }
 
@@ -1102,28 +1102,12 @@ footer p {
 
 /* animation for skills-section => skills bar  */
 
-@keyframes html {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 88%;
-  }
-}
-@keyframes css {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 82%;
-  }
-}
 @keyframes react {
   0% {
     width: 0%;
   }
   100% {
-    width: 78%;
+    width: 90%;
   }
 }
 @keyframes node {
@@ -1131,7 +1115,23 @@ footer p {
     width: 0%;
   }
   100% {
-    width: 85%;
+    width: 90%;
+  }
+}
+@keyframes sql {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 78%;
+  }
+}
+@keyframes python {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 80%;
   }
 }
 @keyframes cpp {
@@ -1147,7 +1147,7 @@ footer p {
     width: 0%;
   }
   100% {
-    width: 70%;
+    width: 85%;
   }
 }
 
