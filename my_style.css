@@ -717,7 +717,7 @@ a.btn:nth-child(2)::before {
   animation-delay: calc(var(--i) * 0.047s);
 }
 
-/* portfolio cards css  */
+/* project cards css  */
 
 .portfolio-section {
   display: flex;
