@@ -1,61 +1,4 @@
-// // Get all the words
-// const words = document.querySelectorAll(".word");
 
-// // Function to animate each word
-// function animateWords(index) {
-//   // Get the current word
-//   const word = words[index];
-
-//   // Get the letters within the word
-//   const letters = word.textContent.split("");
-
-//   // Clear the word
-//   word.textContent = "";
-
-//   // Variable to track the letter index
-//   let letterIndex = 0;
-
-//   // Function to animate each letter
-//   function animateLetters() {
-//     // Check if all letters have been animated
-//     if (letterIndex === letters.length) {
-//       // If all letters have been animated, move to the next word
-//       if (index === words.length - 1) {
-//         // If it's the last word, start over from the beginning
-//         animateWords(0);
-//       } else {
-//         // Otherwise, move to the next word
-//         animateWords(index + 1);
-//       }
-//       return;
-//     }
-
-//     // Get the current letter
-//     const letter = letters[letterIndex];
-
-//     // Create a span element for the letter
-//     const span = document.createElement("span");
-//     span.textContent = letter;
-
-//     // Add the animation class to the letter
-//     span.classList.add("animated-letter");
-
-//     // Append the letter to the word
-//     word.appendChild(span);
-
-//     // Increment the letter index
-//     letterIndex++;
-
-//     // Call the function again after a delay
-//     setTimeout(animateLetters, 200); // Adjust the delay as desired
-//   }
-
-//   // Start animating the letters
-//   animateLetters();
-// }
-
-// // Start the animation for the first word
-// animateWords(0);
 
 let words = document.querySelectorAll(".word");
 
@@ -164,7 +107,7 @@ let section = document.querySelectorAll("section");
 
 function activeMenu() {
   let len = section.length;
-  while (--len && window.scrollY + 97 < section[len].offsetTop) {
+  while (--len && window.scrollY + 127 < section[len].offsetTop) {
     /* do nothing*/
     // just finding the section index whose offset is greater than scrollY then forwarding control to next statements
   }

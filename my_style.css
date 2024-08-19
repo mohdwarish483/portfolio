@@ -81,7 +81,9 @@ header.sticky {
   background: var(--bg-color);
   border-bottom: 1px solid var(--second-bg-color);
   padding: 20px 10%;
-  z-index: 1000;
+}
+.logo {
+  z-index: 500;
 }
 .logo a {
   font-size: 26px;
@@ -106,6 +108,7 @@ span {
   font-size: 1rem;
   padding: 10px 20px;
   min-height: 45px;
+  transition: all 0.4s;
 }
 .navlist a:hover {
   color: var(--hover-color);
@@ -146,6 +149,14 @@ span {
 
 section {
   padding: 50px 10%;
+}
+.section-heading {
+  padding-bottom: 20px;
+  font-size: var(--normal-font);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--hover-color);
+  text-align: center;
 }
 
 /* home content goes here */
@@ -239,6 +250,7 @@ section {
   transition: 0.6s;
   box-shadow: var(--neon-box-shadow);
   border-radius: 5px;
+  /* border-radius: 20px 0px; */
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -502,6 +514,115 @@ a.btn:nth-child(2)::before {
   grid-template-columns: repeat(3, 1fr);
 }
 
+/* expereince section goes here */
+
+.experience-section {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding-bottom: 0px;
+}
+.experience-container {
+  width: 100%;
+  height: 100%;
+  padding: 0px 0px 0px 30px;
+  border-left: 2px solid var(--hover-color);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.experience-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  flex: 1 1 18rem;
+  color: white;
+  padding: 2rem 2rem;
+  background: var(--second-bg-color);
+  transition: all 0.4s;
+  border-radius: 50px 0px;
+}
+.experience-box:hover {
+  background: var(--third-bg-color);
+  /* box-shadow: var(--neon-box-shadow); */
+}
+
+.experience-box::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  top: 0;
+  right: calc(100% + 21px);
+  border: 2px solid var(--hover-color);
+  background-color: var(--bg-color);
+}
+.experience-box .experience-role {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.experience-box .experience-role h4:nth-child(1) {
+  width: max-content;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  border: 2px solid var(--hover-color);
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 20px 0px;
+  background-color: var(--bg-color);
+  color: var(--hover-color);
+  box-shadow: var(--neon-box-shadow);
+}
+
+.experience-box .title a {
+  color: white;
+  text-decoration: underline;
+}
+
+.experience-bullet-list {
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.experience-bullet-list {
+  list-style-type: none;
+  width: 100%;
+  height: 100%;
+  padding-left: 0;
+  margin: 0px;
+}
+
+.experience-bullet-list li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.6;
+  vertical-align: middle;
+}
+
+.experience-bullet-list li .purple {
+  flex-shrink: 0;
+  margin-right: 10px;
+  color: var(--hover-color);
+}
+
+.experience-bullet-list li p {
+  margin: 0;
+  font-size: 1rem;
+}
+
 /*  service section css style */
 
 .services-section {
@@ -512,13 +633,7 @@ a.btn:nth-child(2)::before {
   gap: 2rem;
   align-items: center;
 }
-.services-section h2 {
-  font-size: var(--normal-font);
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--hover-color);
-  text-align: center;
-}
+
 .services {
   width: 100%;
   display: grid;
@@ -540,7 +655,8 @@ a.btn:nth-child(2)::before {
   text-align: center;
   background: var(--second-bg-color);
   transition: all 0.4s;
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  border-radius: 50px 0px;
 }
 .service-btn {
   width: auto;
@@ -584,13 +700,7 @@ a.btn:nth-child(2)::before {
   gap: 2rem;
   background: var(--second-bg-color);
 }
-.skills-section h2 {
-  font-size: var(--normal-font);
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--hover-color);
-  text-align: center;
-}
+
 .skills-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -717,7 +827,7 @@ a.btn:nth-child(2)::before {
   animation-delay: calc(var(--i) * 0.047s);
 }
 
-/* project cards css  */
+/* practice portfolio section goes here */
 
 .portfolio-section {
   display: flex;
@@ -730,26 +840,167 @@ a.btn:nth-child(2)::before {
   height: auto;
 }
 
-.portfolio-section h2 {
-  font-size: var(--normal-font);
-  font-weight: 600;
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--hover-color);
-}
-
 .portfolio-container {
   width: 100%;
   height: 100%;
   gap: 2rem;
   position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 
-.portfolio-container .card {
+.flip-card {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: width 1s ease;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: transform 0.5s ease, width 0.5s ease, border 0.5s ease,
+    box-shadow 0.5s ease;
+  z-index: 100;
+  box-shadow: var(--neon-box-shadow);
+  border: 2px solid var(--hover-color);
+}
+.flip-card-front::before {
+  content: "";
+  position: absolute;
+  background: linear-gradient(transparent, black);
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  z-index: 20;
+  transition: 0.5s all ease;
+  border-radius: 10px;
+}
+.flip-card:hover .flip-card-front::before {
+  opacity: 0.5;
+  background: linear-gradient(transparent, var(--hover-color));
+  border-top-right-radius: 0px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 10px;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Style the back side */
+.flip-card-back {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid var(--hover-color);
+  background: linear-gradient(var(--second-bg-color), var(--third-bg-color));
+  box-sizing: border-box;
+  transition: transform 0.5s ease, width 0.5s ease, border 0.5s ease,
+    opacity 0.5s ease;
+  transform: rotateY(180deg);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.content h2 {
+  color: var(--text-color);
+  text-transform: uppercase;
+}
+
+.content p.about-project {
+  font-weight: 300;
+}
+
+.flip-card-back .content .libraries {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 100%;
+  height: 45px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 0.5rem;
+}
+
+.flip-card-back .content .libraries p {
+  color: var(--hover-color);
+  min-width: 70px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  text-align: center;
+  background: var(--bg-color);
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 0.5rem 0;
+  transition: all 0.5s ease-in-out;
+  border: 1px solid var(--hover-color);
+}
+.flip-card-back .content .libraries p:hover {
+  color: var(--text-color);
+  background: var(--hover-color);
+  /* border: 1px solid var(--text-color); */
+  cursor: pointer;
+  text-shadow: 0 0 10px rgba(255, 0, 234, 0.6), 0 0 20px rgba(255, 0, 234, 0.6),
+    0 0 30px rgba(255, 0, 234, 0.6), 0 0 40px rgba(255, 0, 234, 0.6),
+    0 0 70px rgba(255, 0, 234, 0.6), 0 0 80px rgba(255, 0, 234, 0.6),
+    0 0 100px rgba(255, 0, 234, 0.6), 0 0 150px rgba(255, 0, 234, 0.6);
+}
+
+/* portfolio projects cards css  */
+
+/* .portfolio-container .card {
   position: relative;
   width: 50%;
   height: 350px;
@@ -853,24 +1104,7 @@ a.btn:nth-child(2)::before {
   opacity: 1;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
 
-.content h2 {
-  color: var(--text-color);
-  text-transform: uppercase;
-}
-
-.content p.about-project {
-  font-weight: 300;
-}
 
 .face2 .content .libraries {
   display: flex;
@@ -899,13 +1133,13 @@ a.btn:nth-child(2)::before {
 .face2 .content .libraries p:hover {
   color: var(--text-color);
   background: var(--hover-color);
-  /* border: 1px solid var(--text-color); */
+  border: 1px solid var(--text-color);
   cursor: pointer;
   text-shadow: 0 0 10px rgba(255, 0, 234, 0.6), 0 0 20px rgba(255, 0, 234, 0.6),
     0 0 30px rgba(255, 0, 234, 0.6), 0 0 40px rgba(255, 0, 234, 0.6),
     0 0 70px rgba(255, 0, 234, 0.6), 0 0 80px rgba(255, 0, 234, 0.6),
     0 0 100px rgba(255, 0, 234, 0.6), 0 0 150px rgba(255, 0, 234, 0.6);
-}
+} */
 
 /* css for contact us  */
 
@@ -921,12 +1155,7 @@ a.btn:nth-child(2)::before {
   height: auto;
   background: var(--second-bg-color);
 }
-.contact-section h2 {
-  font-size: var(--normal-font);
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--hover-color);
-}
+
 .contact-container {
   width: 100%;
   display: grid;
@@ -1195,7 +1424,7 @@ footer p {
   .navlist {
     display: flex;
     position: absolute;
-    top: -500%;
+    top: -566%;
     left: 0;
     right: 0;
     flex-direction: column;
@@ -1203,6 +1432,7 @@ footer p {
     text-align: left;
     padding: 40px 5%;
     transition: all 0.5s ease;
+    z-index: 400;
   }
   .navlist a {
     display: block;
@@ -1235,7 +1465,7 @@ footer p {
     width: 100%;
     height: 100%;
   }
-  .portfolio-container .card {
+  /* .portfolio-container .card {
     width: 400px;
     height: 350px;
     display: flex;
@@ -1324,6 +1554,9 @@ footer p {
     border-bottom-left-radius: 10px;
     border: 2px solid var(--hover-color);
     border-top: 0px;
+  } */
+  .portfolio-container {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1338,6 +1571,14 @@ footer p {
   .info-blob3 {
     width: 90px;
     height: 90px;
+  }
+
+  .experience-box .experience-role {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .experience-box .experience-role h4:nth-child(1) {
+    font-size: 1rem;
   }
 
   .circle-skills-box p {
@@ -1386,6 +1627,13 @@ footer p {
     width: 80px;
     height: 80px;
   }
+  .experience-container {
+    padding: 0px;
+    border-left: none;
+  }
+  .experience-box::before {
+    display: none;
+  }
   .services {
     grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
   }
@@ -1395,17 +1643,22 @@ footer p {
   .circle .points {
     transform: rotate(calc(var(--i) * var(--rot))) translateY(-40px);
   }
-  .portfolio-container .card {
+  .portfolio-container .flip-card {
+    width: 100%;
+    height: 400px;
+  }
+  /* .portfolio-container .card {
     width: 300px;
     height: 250px;
   }
   .portfolio-container .card:hover {
     width: 300px;
     height: 500px;
-  }
-  .portfolio-container .card:hover .content p.about-project {
+  } */
+  /* .portfolio-container .card:hover .content p.about-project {
     display: none;
-  }
+  } */
+
   .face2 .content .libraries {
     display: flex;
     max-width: 100%;
@@ -1417,7 +1670,8 @@ footer p {
   }
   .face2-btn {
     width: 100%;
-    height: 105px;
+    /* height: 105px; */
+    height: 80px;
     flex-direction: column-reverse;
     align-items: center;
     text-align: center;
@@ -1426,7 +1680,8 @@ footer p {
     margin: 10px 0px;
   }
   .face2-btn a.btn {
-    width: 60%;
+    width: 100%;
+    padding: 10px;
   }
 }
 @media (max-width: 425px) {
@@ -1445,6 +1700,9 @@ footer p {
   }
 }
 @media (max-width: 375px) {
+  .btn-box {
+    width: 100% !important;
+  }
   .change-text {
     font-size: 1.2rem;
   }
@@ -1472,17 +1730,27 @@ footer p {
   .professional-skills-info {
     grid-template-columns: 1fr;
   }
-  .portfolio-container .card {
+  .portfolio-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  }
+
+  /* .portfolio-container .card {
     width: 250px;
     height: 250px;
+  } */
+  .portfolio-container .flip-card {
+    width: 100%;
+    height: 250px;
   }
-  .portfolio-container .card:hover {
+  /* .portfolio-container .card:hover {
     width: 250px;
     height: 500px;
+  } */
+
+  .portfolio-container .flip-card:hover .content p.about-project {
+    display: none;
   }
-  .face2-btn a.btn {
-    width: 70%;
-  }
+
   footer p {
     font-size: 0.8rem;
   }
