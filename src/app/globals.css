@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b0f14;
+  --ink-elevated: #121820;
+  --steel: #1a2332;
+  --teal-deep: #0e3b3a;
+  --teal-mid: #1a5c57;
+  --amber: #e8a838;
+  --amber-dim: #b8842a;
+  --mint: #3ddc97;
+  --fog: #c5cdd8;
+  --fog-dim: #8b95a5;
+  --line: rgba(197, 205, 216, 0.12);
+  --grain: rgba(232, 168, 56, 0.04);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-elevated: var(--ink-elevated);
+  --color-steel: var(--steel);
+  --color-teal-deep: var(--teal-deep);
+  --color-teal-mid: var(--teal-mid);
+  --color-amber: var(--amber);
+  --color-amber-dim: var(--amber-dim);
+  --color-fog: var(--fog);
+  --color-fog-dim: var(--fog-dim);
+  --color-line: var(--line);
+  --font-sans: var(--font-plex-sans);
+  --font-serif: var(--font-instrument);
+  --font-mono: var(--font-plex-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--fog);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  min-height: 100%;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--amber) 35%, transparent);
+  color: #fff;
+}
+
+.site-atmosphere {
+  background:
+    radial-gradient(ellipse 90% 60% at 15% -10%, color-mix(in srgb, var(--teal-deep) 75%, transparent), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 10%, color-mix(in srgb, var(--steel) 80%, transparent), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, color-mix(in srgb, var(--teal-mid) 25%, transparent), transparent 55%),
+    var(--ink);
+}
+
+.spectrogram-grain {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 3px,
+      var(--grain) 3px,
+      var(--grain) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 7px,
+      rgba(61, 220, 151, 0.03) 7px,
+      rgba(61, 220, 151, 0.03) 8px
+    );
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 85%);
+  pointer-events: none;
+}
+
+.prose-case {
+  max-width: 42rem;
+}
+
+.prose-case h1 {
+  font-family: var(--font-instrument), Georgia, serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  color: #f4f6f8;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.prose-case h2 {
+  font-family: var(--font-instrument), Georgia, serif;
+  font-size: 1.35rem;
+  color: #f4f6f8;
+  margin: 2.25rem 0 0.75rem;
+}
+
+.prose-case p,
+.prose-case li {
+  color: var(--fog-dim);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.prose-case p {
+  margin: 0 0 1rem;
+}
+
+.prose-case ul {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.prose-case li {
+  margin-bottom: 0.4rem;
+}
+
+.prose-case strong {
+  color: #e8edf2;
+  font-weight: 600;
+}
+
+.prose-case a {
+  color: var(--amber);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-case pre,
+.prose-case code {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+.prose-case pre {
+  background: var(--ink-elevated);
+  border: 1px solid var(--line);
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--fog);
+  margin: 1.25rem 0;
+}
+
+.prose-case table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+}
+
+.prose-case th,
+.prose-case td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  color: var(--fog-dim);
+}
+
+.prose-case th {
+  color: var(--fog);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

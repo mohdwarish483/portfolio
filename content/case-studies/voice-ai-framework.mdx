@@ -1,0 +1,123 @@
+---
+slug: voice-ai-framework
+title: Voice AI Framework
+subtitle: Telephony-grade STT→LLM→TTS under a sub-500ms budget
+outcomeMetric: Sub-500ms end-to-end turn latency
+role: AI Engineer
+org: Quanteon Solutions
+orgUrl: null
+dateStart: 2025-04
+dateEnd: present
+featured: true
+order: 1
+status: proprietary
+stack:
+  - Twilio
+  - Deepgram
+  - Azure OpenAI
+  - vLLM
+  - Qwen 3
+  - ElevenLabs
+  - Docker
+  - AWS EC2
+links:
+  live: null
+  repo: null
+  demo: null
+coverImage: /images/voice-ai-agent.png
+nda:
+  blocked:
+    - production call audio with PHI
+    - customer prompts and tool schemas
+    - production configs and scaling numbers
+  sanitizedProof:
+    - latency waterfall diagram (STT / LLM TTFT / TTS / network)
+    - synthetic demo call with fake patient/slot data
+    - architecture one-pager (AWS EC2, Docker workers, vLLM, Deepgram, Azure OpenAI, ElevenLabs)
+    - eval snapshot: tool-call success before/after Qwen fine-tune (approximate, labeled)
+seoDescription: >-
+  Designed and shipped a HIPAA-oriented voice agent framework with interruptible
+  STT–LLM–TTS, Dockerized vLLM inference on AWS, and domain-adapted Qwen tool-calling.
+---
+
+# Voice AI Framework
+
+**Outcome:** Sub-500ms overall turn latency on a high-concurrency telephony path.
+
+Healthcare and recruitment workflows needed agents that book appointments, run prior-auth conversations, and interview candidates—without sounding like IVR and without blowing a half-second response budget.
+
+## Problem
+
+Voice turns fail when the pipeline stacks STT wait + LLM TTFT + TTS first-byte + network. Barge-in (interruptibility) makes the problem harder: the system must cancel in-flight TTS, retain context, and resume without dumping tool state. The domain is regulated (HIPAA boundary on transcripts and tool payloads), so logging and vendor boundaries matter as much as model quality.
+
+## Approach
+
+I designed a reusable **Voice AI Agent Framework** and shipped specialized agents on top of it:
+
+- **Appointment Scheduler** — slot search, confirm, reschedule via tool-calls
+- **Prior Auth Agent** — structured intake and payer workflow turns
+- **Interviewer Agent** — scripted + adaptive question loops for recruiting
+
+Core loop: **Deepgram STT → LLM (Azure OpenAI and/or local vLLM) → ElevenLabs TTS**, with Twilio as the telephony edge. Inference workers run on **AWS EC2 in Docker**, with worker pools sized for concurrent calls. Domain adaptation: fine-tuned **Qwen 3** on **1.2K call transcripts** to raise tool-calling and information-extraction accuracy.
+
+## System
+
+```
+Caller ── Twilio media ──► STT (Deepgram)
+                              │ partials + finals
+                              ▼
+                    Orchestrator (barge-in, context, tools)
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+         Azure OpenAI     vLLM workers    Tool adapters
+                              │           (schedule / auth / CRM)
+                              ▼
+                         TTS (ElevenLabs) ──► Twilio ──► Caller
+```
+
+**Suggested artifact:** latency waterfall scrubber — STT finalize → LLM TTFT → first TTS audio → round-trip — targeting the sub-500ms story. Mark each bar with measured vs budget.
+
+## What I built
+
+- Designed the agent runtime: turn state, interruptibility, and tool-use contracts for scheduling and intake
+- Containerized **vLLM** workers on **AWS EC2**; instrumented concurrency and cold-start behavior
+- Wired a **HIPAA-oriented STT–LLM–TTS** path (Deepgram, Azure OpenAI, ElevenLabs) with careful PHI handling at log boundaries
+- Fine-tuned **Qwen 3** on 1.2K transcripts; measured lift on tool-call success and field extraction
+- Deployed Appointment / Prior Auth / Interviewer agents on the shared framework
+
+## Results
+
+| Metric | Result | Notes |
+|--------|--------|-------|
+| End-to-end turn latency | Sub-500ms | Overall budget across STT→LLM→TTS path |
+| Inference hosting | Docker on AWS EC2 | Auto-scaling worker pools |
+| Domain fine-tune | Qwen 3 · 1.2K transcripts | Tool-calling and extraction improved |
+| Agent types shipped | 3 | Scheduler, prior-auth, interviewer |
+
+Exact per-stage p50/p95 and concurrent-call ceilings are **NDA-bound**. Replace with a sanitized waterfall and labeled ranges before publish.
+
+## Demo & proof (NDA gaps)
+
+| Gap | Sanitized substitute |
+|-----|----------------------|
+| Live production UI / repo | Status chip: **Proprietary** — no public code |
+| Real call recordings | 60–90s **synthetic** call (fake names, slots, payer IDs); blur any residual PHI |
+| Vendor-specific prompts | Architecture SVG + tool-interface list without prompt text |
+| Exact eval numbers | Table with ~ranges + methodology footnote (“n = golden turns; measured offline”) |
+
+## Engineering notes
+
+1. **Barge-in vs latency:** Cancelling TTS early saves perceived lag but races tool execution; I kept tool commits idempotent so a partial utterance cannot double-book.
+2. **Cloud LLM vs vLLM:** Azure OpenAI for capability; local vLLM when TTFT and cost under concurrency dominate. The framework treats both as swappable backends behind one turn API.
+3. **Fine-tune vs prompting:** Prompt-only tool schemas drifted on healthcare jargon; the 1.2K-transcript Qwen adapt reduced malformed tool calls more than longer system prompts alone.
+
+## Links
+
+- Live / repo: proprietary (Quanteon)
+- Related: Multi-agent PM case study (orchestration patterns); Industrial AI systems (LangGraph copilots at Eizen)
+---
+
+## Frontmatter checklist for Next.js
+
+Use `status: proprietary` to render a disabled CTA. Drive the Work index from `featured` + `order`.

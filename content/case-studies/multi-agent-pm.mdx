@@ -1,0 +1,117 @@
+---
+slug: multi-agent-pm
+title: Multi-Agent Project Manager
+subtitle: Orchestration and planning agents for tasking, staffing, and reports
+outcomeMetric: Multi-agent planning loop with RAG-backed context
+role: Builder / owner
+org: Personal / open source
+orgUrl: null
+dateStart: 2024
+dateEnd: 2024
+featured: true
+order: 2
+status: public
+stack:
+  - LangChain
+  - GROQ
+  - FAISS
+  - RAG
+  - Python
+links:
+  live: https://github.com/mohdwarish483/Multi_AI_Agent_Project_Management_System
+  repo: https://github.com/mohdwarish483/Multi_AI_Agent_Project_Management_System
+  demo: null
+coverImage: /images/project-management-ui.png
+nda:
+  blocked: []
+  sanitizedProof:
+    - agent topology diagram (planner / prioritizer / staffing / reporter)
+    - tool-call graph with FAISS retrieval edges
+    - short screen recording of plan → tasks → report path
+seoDescription: >-
+  Built a multi-agent project management system that generates tasks, prioritizes
+  work, suggests team configurations, and produces dynamic reports with RAG context.
+---
+
+# Multi-Agent Project Manager
+
+**Outcome:** An orchestration stack that turns project goals into prioritized tasks, staffing suggestions, and actionable reports—without a single monolithic prompt.
+
+Reframe: this is not a “project management SaaS pitch.” It is a **planning + orchestration** demo—agent roles, tool interfaces, and retrieval context working as a graph.
+
+## Problem
+
+Single-agent PM chatbots collapse under long context: task generation, prioritization, team fit, and reporting fight for the same window. Failures show up as hallucinated deadlines, staffing that ignores skills, and reports that ignore earlier decisions. The hard problem is **role separation + shared memory + tool contracts**, not another dashboard skin.
+
+## Approach
+
+I built a multi-agent system where specialized agents own one job and hand off structured artifacts:
+
+- **Task generation** from goals and constraints
+- **Prioritization** with context-aware suggestions
+- **Team configuration** for optimal staffing mixes
+- **Report generation** with actionable insights
+
+Retrieval: **FAISS + RAG** so agents ground suggestions in project docs rather than inventing scope. Inference via **GROQ**; orchestration with **LangChain**-style agent loops (extendable toward LangGraph topologies used in production work).
+
+## System
+
+```
+                    ┌─────────────┐
+   Project docs ──► │ FAISS / RAG │
+                    └──────┬──────┘
+                           │ retrieved chunks
+                           ▼
+                 ┌───────────────────┐
+                 │  Orchestrator     │
+                 └─────────┬─────────┘
+       ┌─────────┬─────────┼─────────┬─────────┐
+       ▼         ▼         ▼         ▼         ▼
+   Planner   Prioritizer  Staffer  Reporter  (tools)
+       │         │         │         │
+       └─────────┴────┬────┴─────────┘
+                      ▼
+              Shared task / plan state
+```
+
+**Suggested artifact:** agent graph SVG — nodes = agents, edges = tool/artifact handoffs; highlight retrieval edges into FAISS.
+
+## What I built
+
+- Designed agent roles and the shared plan/task schema each handoff must satisfy
+- Wired **RAG over FAISS** for context-aware tasking and suggestions
+- Implemented prioritization and team-configuration agents so staffing is a separate decision from task dump
+- Built dynamic **report generation** that summarizes decisions into actionable insights
+- Shipped the system as a public GitHub project for inspection and extension
+
+## Results
+
+| Metric | Result | Notes |
+|--------|--------|-------|
+| Agent roles | Planner · prioritizer · staffing · reporter | Clear ownership per node |
+| Grounding | FAISS RAG | Reduces unsupported suggestions |
+| Public proof | Full source on GitHub | Contrast to proprietary voice stack |
+| Latency / cost | Not primary KPI | Document token path if re-measured |
+
+Prefer honest scope: this project proves **orchestration design**; production latency/HIPAA claims live in the Voice case study.
+
+## Demo & proof
+
+| Need | Artifact |
+|------|----------|
+| Recruiter skim | Agent graph + one screenshot of UI (`Project_Management_UI.png`) |
+| Depth | Repo walkthrough: agent entrypoints → tools → FAISS index build |
+| Optional | 60s screen recording: goal in → task list → report out |
+
+No NDA block. If product UI looks unfinished, lead with the **agent graph**, not marketing copy.
+
+## Engineering notes
+
+1. **Split agents beat mega-prompts:** Prioritization quality improved when the planner could not also rewrite staffing mid-turn.
+2. **RAG is a contract:** Chunking and metadata (epic, owner, due date) matter more than model size for “context-aware” claims.
+3. **What I’d do next:** Migrate the graph to **LangGraph** with explicit checkpoints, add an eval harness (golden plans: task completeness, priority agreement, staffing constraint violations), and expose traces (Phoenix/LangSmith) as a portfolio observability screenshot.
+
+## Links
+
+- Repo / site: [Multi_AI_Agent_Project_Management_System](https://github.com/mohdwarish483/Multi_AI_Agent_Project_Management_System)
+- Related: Voice AI Framework (production agents); Industrial AI systems (LangGraph + RAG copilots at Eizen)
