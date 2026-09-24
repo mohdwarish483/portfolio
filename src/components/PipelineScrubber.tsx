@@ -16,6 +16,8 @@ const stages = [
   { id: "tts", label: "TTS", detail: "ElevenLabs", budget: 110 },
 ];
 
+const maxBudget = Math.max(...stages.map((s) => s.budget));
+
 export function PipelineScrubber() {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -31,31 +33,37 @@ export function PipelineScrubber() {
   };
 
   return (
-    <section
-      className="border-y border-line bg-ink-elevated/60 py-14 md:py-16"
-      aria-label="Call path latency scrubber"
-    >
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <section className="px-5 py-6 md:px-8" aria-label="Call path latency scrubber">
+      <div className="surface mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-10">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-amber">
-              Call path
-            </p>
-            <h2 className="mt-2 font-serif text-2xl text-white md:text-3xl">
-              Scrub the turn budget
-            </h2>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-amber">Call path</p>
+            <h2 className="mt-2 font-serif text-2xl text-white md:text-3xl">Scrub the turn budget</h2>
           </div>
-          <p className="max-w-sm font-mono text-xs leading-relaxed text-fog-dim">
-            Target &lt;500ms end-to-end. Drag to inspect stage contributions along
-            STT → LLM → Tools → TTS.
+          <p className="max-w-sm text-sm leading-relaxed text-fog-dim">
+            Target &lt;500ms end-to-end. Drag the track to inspect STT, LLM, tools, and TTS.
           </p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {stages.map((stage, i) => (
+            <StageCard
+              key={stage.id}
+              stage={stage}
+              start={i / stages.length}
+              end={(i + 1) / stages.length}
+              progress={progress}
+              index={i}
+              reduce={!!reduce}
+            />
+          ))}
         </div>
 
         <div
           ref={trackRef}
-          className="relative cursor-ew-resize touch-none select-none py-6"
+          className="relative mt-6 cursor-ew-resize touch-none select-none py-4"
           onPointerDown={(e) => {
-            (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+            (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
             onPointer(e.clientX);
           }}
           onPointerMove={(e) => {
@@ -63,27 +71,19 @@ export function PipelineScrubber() {
             onPointer(e.clientX);
           }}
         >
-          <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-line" />
-          <div className="grid grid-cols-4 gap-2 md:gap-4">
-            {stages.map((stage, i) => (
-              <StageColumn
-                key={stage.id}
-                stage={stage}
-                start={i / stages.length}
-                end={(i + 1) / stages.length}
-                progress={progress}
-                index={i}
-                reduce={!!reduce}
-              />
-            ))}
+          <div className="h-1.5 rounded-full bg-white/10">
+            <motion.div
+              className="h-full rounded-full bg-amber/70"
+              style={{ width: scrubLeft }}
+            />
           </div>
           <motion.div
-            className="pointer-events-none absolute top-0 bottom-0 w-px bg-amber"
+            className="pointer-events-none absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-ink bg-amber shadow-[0_0_16px_rgba(61,255,154,0.7)]"
             style={{ left: scrubLeft }}
           />
         </div>
 
-        <div className="mt-2 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.16em] text-fog-dim">
+        <div className="mt-1 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.16em] text-fog-dim">
           <span>0ms</span>
           <span className="text-amber">~450ms typical</span>
           <span>500ms budget</span>
@@ -93,7 +93,7 @@ export function PipelineScrubber() {
   );
 }
 
-function StageColumn({
+function StageCard({
   stage,
   start,
   end,
@@ -108,34 +108,31 @@ function StageColumn({
   index: number;
   reduce: boolean;
 }) {
-  const opacity = useTransform(progress, (p) => {
-    if (p < start) return 0.35;
-    if (p > end) return 0.55;
-    return 1;
-  });
-  const scaleY = useTransform(progress, (p) => {
-    if (p >= start && p <= end) return 1;
-    return 0.72;
-  });
+  const onStage = (p: number) => p >= start && p <= end;
+  const barScale = useTransform(progress, (p) => (onStage(p) ? 1 : 0.92));
+  const barOpacity = useTransform(progress, (p) => (onStage(p) ? 1 : 0.45));
 
   return (
     <motion.div
-      style={{ opacity }}
-      className="relative z-10 border border-line bg-ink/80 p-3 md:p-4"
+      className="rounded-2xl border border-line bg-ink/70 p-4"
       initial={reduce ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ delay: index * 0.08, duration: 0.45 }}
     >
-      <motion.div
-        className="mb-3 origin-bottom bg-gradient-to-t from-teal-mid to-amber"
-        style={{ height: `${stage.budget / 2.2}px`, scaleY }}
-      />
-      <p className="font-mono text-xs uppercase tracking-[0.16em] text-white">
-        {stage.label}
-      </p>
+      <div className="flex h-24 items-end">
+        <motion.div
+          className="w-full origin-bottom rounded-md bg-gradient-to-t from-teal-mid to-amber"
+          style={{
+            height: `${Math.max(28, (stage.budget / maxBudget) * 96)}px`,
+            scaleY: barScale,
+            opacity: barOpacity,
+          }}
+        />
+      </div>
+      <p className="mt-4 font-mono text-xs uppercase tracking-[0.16em] text-white">{stage.label}</p>
       <p className="mt-1 text-sm text-fog-dim">{stage.detail}</p>
-      <p className="mt-2 font-mono text-[11px] text-amber">~{stage.budget}ms</p>
+      <p className="mt-2 font-mono text-xs text-amber">~{stage.budget}ms</p>
     </motion.div>
   );
 }

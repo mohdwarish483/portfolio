@@ -1,46 +1,48 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { stackPillars } from "@/lib/site";
+import { certifications, stackPillars } from "@/lib/site";
 
 export function StackSection() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="stack" className="scroll-mt-24 border-t border-line py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-amber">Stack</p>
-        <h2 className="mt-3 font-serif text-3xl text-white md:text-4xl">
-          Three pillars I own
-        </h2>
-        <p className="mt-4 max-w-xl text-fog-dim">
-          Keyword scan for recruiters—grouped, not a badge wall.
-        </p>
+    <section id="skills" className="section-anchor section-pad overflow-x-clip px-5 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <h2 className="heading-section">Skills</h2>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
-          {stackPillars.map((pillar, i) => (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {stackPillars.map((pillar, index) => (
             <motion.div
               key={pillar.title}
-              initial={reduce ? false : { opacity: 0, y: 16 }}
+              className="surface min-w-0 p-5"
+              initial={reduce ? false : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.4 }}
+              transition={{ delay: Math.min(index * 0.04, 0.2), duration: 0.4 }}
             >
-              <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-amber">
-                {pillar.title}
-              </h3>
+              <h3 className="text-body font-semibold text-white">{pillar.title}</h3>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {pillar.chips.map((chip) => (
-                  <li
-                    key={chip}
-                    className="border border-line px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-fog"
-                  >
-                    {chip}
+                  <li key={chip}>
+                    <span className="skill-chip">{chip}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-8">
+          <h3 className="heading-card">Certifications</h3>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {certifications.map((item) => (
+              <li key={item.title} className="surface min-w-0 px-4 py-3">
+                <p className="text-body text-fog">{item.title}</p>
+                <p className="text-secondary mt-1 text-fog-dim">{item.detail}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

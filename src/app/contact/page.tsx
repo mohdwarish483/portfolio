@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="pt-16">
+    <div className="pt-14">
       <ContactSection />
     </div>
   );

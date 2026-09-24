@@ -1,0 +1,58 @@
+---
+slug: smart-city-operations
+title: Smart City Operational Intelligence Platform
+subtitle: Detection, tracking, and decision agents on live city video
+outcomeMetric: CCTV events become incidents, recommendations, and forecasts.
+role: AI Engineer
+org: Quanteon Solutions
+orgUrl: null
+dateStart: 2025-04
+dateEnd: present
+featured: true
+order: 5
+status: proprietary
+stack:
+  - DeepStream
+  - YOLO11
+  - ByteTrack
+  - Kafka
+  - Flink
+  - Bedrock
+problem:
+  - Live CCTV detections stay on the video wall unless they become incidents someone can act on.
+  - Shift plans, patrol plans, and crowd forecasts need those events, not another raw feed.
+built:
+  - Real-time CCTV analytics with DeepStream, YOLO11, and ByteTrack.
+  - Wrong-Way Driving, Footpath Driving, Road Blockage, Stray Cattle, Loitering, and Intrusion Detection.
+  - Accident, fire and smoke, waterlogging, and crowd monitoring.
+  - Operational Advisory Agent on Amazon Bedrock turns vision events into recommendations.
+  - City Mobility Recommendation System for work-from-office shift schedules and corridor congestion.
+  - Women Safety Patrolling Recommendation Agent from historical incidents, hotspots, and risk context.
+  - Ghost Jam Prediction and Hyderabad Metro Crowd Surge Forecasting.
+pipeline:
+  - label: Cameras
+    detail: Streams enter DeepStream on GPU.
+  - label: Detect
+    detail: YOLO11 marks events on the frame.
+  - label: Track
+    detail: ByteTrack keeps identities across frames.
+  - label: Bus
+    detail: Detections publish to Kafka.
+  - label: Rules
+    detail: Apache Flink applies use-case rules and emits operational events.
+  - label: Decisions
+    detail: Bedrock agents recommend, schedule patrols and shifts, and forecast.
+results:
+  - label: Outcome
+    detail: CCTV events become incidents, recommendations, and forecasts.
+links:
+  live: null
+  repo: null
+  demo: null
+coverImage: null
+seoDescription: >-
+  Smart City Operational Intelligence Platform at Quanteon. DeepStream, YOLO11,
+  ByteTrack, Kafka, and Flink turn CCTV into incidents, recommendations, and forecasts.
+---
+
+- Customer video and model thresholds stay internal.

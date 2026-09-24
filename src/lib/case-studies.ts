@@ -2,6 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 
+export type StudyRow = {
+  label: string;
+  detail: string;
+};
+
 export type CaseStudyFrontmatter = {
   slug: string;
   title: string;
@@ -16,6 +21,10 @@ export type CaseStudyFrontmatter = {
   order: number;
   status: "public" | "proprietary" | "proprietary-summary" | string;
   stack: string[];
+  problem: string[];
+  built: string[];
+  pipeline: StudyRow[];
+  results: StudyRow[];
   links: {
     live: string | null;
     repo: string | null;
@@ -36,6 +45,17 @@ export type CaseStudy = CaseStudyFrontmatter & {
 
 const DIR = path.join(process.cwd(), "content/case-studies");
 
+function normalize(data: CaseStudyFrontmatter): CaseStudyFrontmatter {
+  return {
+    ...data,
+    problem: data.problem ?? [],
+    built: data.built ?? [],
+    pipeline: data.pipeline ?? [],
+    results: data.results ?? [],
+    stack: data.stack ?? [],
+  };
+}
+
 function readAll(): CaseStudy[] {
   if (!fs.existsSync(DIR)) return [];
 
@@ -46,7 +66,7 @@ function readAll(): CaseStudy[] {
       const raw = fs.readFileSync(path.join(DIR, file), "utf8");
       const { data, content } = matter(raw);
       return {
-        ...(data as CaseStudyFrontmatter),
+        ...normalize(data as CaseStudyFrontmatter),
         content,
         file,
       };
@@ -69,7 +89,7 @@ export function getCaseStudy(slug: string): {
   const file = path.join(DIR, `${slug}.mdx`);
   const raw = fs.readFileSync(file, "utf8");
   const { data, content } = matter(raw);
-  return { frontmatter: data as CaseStudyFrontmatter, content };
+  return { frontmatter: normalize(data as CaseStudyFrontmatter), content };
 }
 
 export function getCaseStudySlugs(): string[] {

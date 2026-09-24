@@ -1,26 +1,28 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Serif } from "next/font/google";
+import { IBM_Plex_Mono, Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/ContactSection";
+import { ParticleField } from "@/components/ParticleField";
+import { CursorTrail } from "@/components/CursorTrail";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "600"],
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  weight: ["600"],
 });
 
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
-});
-
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
-  subsets: ["latin"],
-  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -47,12 +49,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${plexMono.variable} ${instrument.variable} h-full antialiased`}
+      className={`${sourceSans.variable} ${sourceSerif.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="site-atmosphere flex min-h-full flex-col font-sans text-fog">
+        <ParticleField />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <CursorTrail />
       </body>
     </html>
   );

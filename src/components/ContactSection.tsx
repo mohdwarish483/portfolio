@@ -1,51 +1,43 @@
+import { EmailIcon, GitHubIcon, LinkedInIcon, WhatsAppIcon } from "@/components/LinkIcons";
 import { site } from "@/lib/site";
 
 export function ContactSection() {
   return (
-    <section id="contact" className="scroll-mt-24 border-t border-line py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-amber">Contact</p>
-        <h2 className="mt-3 max-w-2xl font-serif text-3xl text-white md:text-4xl">
-          {site.contactHeadline}
-        </h2>
-        <p className="mt-5 max-w-2xl text-fog-dim">{site.contactSupport}</p>
-
-        <div className="mt-10 flex flex-wrap gap-3">
-          <a
-            href={`mailto:${site.email}`}
-            className="bg-amber px-5 py-3 font-mono text-xs uppercase tracking-[0.16em] text-ink transition-colors hover:bg-white"
-          >
-            Email me
-          </a>
-          <a
-            href={site.resumePath}
-            className="border border-fog/25 px-5 py-3 font-mono text-xs uppercase tracking-[0.16em] text-fog transition-colors hover:border-amber hover:text-amber"
-          >
-            Resume
-          </a>
-          <a
-            href={site.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-fog/25 px-5 py-3 font-mono text-xs uppercase tracking-[0.16em] text-fog transition-colors hover:border-amber hover:text-amber"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-fog/25 px-5 py-3 font-mono text-xs uppercase tracking-[0.16em] text-fog transition-colors hover:border-amber hover:text-amber"
-          >
-            GitHub
-          </a>
+    <section id="contact" className="section-anchor section-pad overflow-x-clip px-5 md:px-8">
+      <div className="surface mx-auto grid max-w-6xl gap-8 px-5 py-8 md:grid-cols-[minmax(0,1.35fr)_minmax(0,0.75fr)] md:px-8 md:py-10">
+        <div className="min-w-0">
+          <h2 className="heading-section">Contact</h2>
+          <p className="text-body mt-4 max-w-xl text-fog">{site.contactSupport}</p>
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+            <a href={`mailto:${site.email}?subject=Hiring%20Mohammed%20Warish`} className="btn-primary link-row w-full sm:w-auto">
+              <EmailIcon />
+              <span>Email</span>
+            </a>
+            <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="btn-ghost link-row w-full sm:w-auto">
+              <WhatsAppIcon />
+              <span>WhatsApp</span>
+            </a>
+            <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="btn-ghost link-row w-full sm:w-auto">
+              <LinkedInIcon />
+              <span>LinkedIn</span>
+            </a>
+            <a href={site.github} target="_blank" rel="noopener noreferrer" className="btn-ghost link-row w-full sm:w-auto">
+              <GitHubIcon />
+              <span>GitHub</span>
+            </a>
+          </div>
         </div>
-
-        <p className="mt-8 font-mono text-sm text-fog-dim">
-          <a href={`mailto:${site.email}`} className="text-fog hover:text-amber">
-            {site.email}
+        <div className="flex min-w-0 flex-col justify-end gap-2 border-t border-line pt-6 md:border-l md:border-t-0 md:pl-8 md:pt-0">
+          <p className="text-secondary font-semibold text-amber">Direct</p>
+          <a href={`mailto:${site.email}`} className="link-row text-white hover:text-amber">
+            <EmailIcon />
+            <span className="min-w-0 break-all">{site.email}</span>
           </a>
-        </p>
+          <a href={site.phoneTel} className="text-body text-white hover:text-amber">
+            {site.phoneDisplay}
+          </a>
+          <p className="text-secondary text-fog-dim">{site.location}</p>
+        </div>
       </div>
     </section>
   );
@@ -53,12 +45,12 @@ export function ContactSection() {
 
 export function Footer() {
   return (
-    <footer className="border-t border-line py-8">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 md:px-8">
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-fog-dim">
+    <footer className="px-5 py-8 md:px-8">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
+        <p className="text-secondary text-fog-dim">
           © {new Date().getFullYear()} {site.name}
         </p>
-        <p className="font-mono text-xs text-fog-dim">{site.role}</p>
+        <p className="text-secondary text-fog-dim">{site.location}</p>
       </div>
     </footer>
   );

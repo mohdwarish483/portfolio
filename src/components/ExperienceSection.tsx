@@ -1,77 +1,98 @@
 "use client";
 
-import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { experience } from "@/lib/site";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { experience, type ExperienceItem } from "@/lib/site";
 
 export function ExperienceSection() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="experience" className="scroll-mt-24 border-t border-line py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-amber">
-          Experience
-        </p>
-        <h2 className="mt-3 font-serif text-3xl text-white md:text-4xl">
-          Where the systems shipped
-        </h2>
+    <section id="experience" className="section-anchor section-pad overflow-x-clip px-5 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <h2 className="heading-section">Experience</h2>
 
-        <ol className="mt-12 space-y-10">
-          {experience.map((job, i) => (
-            <motion.li
-              key={`${job.org}-${job.period}`}
-              className={`grid gap-4 border-l border-line pl-5 md:grid-cols-[180px_1fr] md:gap-10 ${
-                job.sidebar ? "opacity-90" : ""
-              }`}
-              initial={reduce ? false : { opacity: 0, x: -12 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-            >
-              <div>
-                <p className="font-mono text-xs uppercase tracking-[0.14em] text-fog-dim">
-                  {job.period}
-                </p>
-                <p className="mt-2 text-sm text-fog">{job.role}</p>
-              </div>
-              <div>
-                <div className="flex flex-wrap items-baseline gap-3">
-                  {job.orgUrl ? (
-                    <a
-                      href={job.orgUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-serif text-2xl text-white hover:text-amber"
-                    >
-                      {job.org}
-                    </a>
-                  ) : (
-                    <h3 className="font-serif text-2xl text-white">{job.org}</h3>
-                  )}
-                  {job.caseStudySlug && (
-                    <Link
-                      href={`/work/${job.caseStudySlug}/`}
-                      className="font-mono text-xs uppercase tracking-[0.14em] text-amber hover:underline"
-                    >
-                      Case study →
-                    </Link>
-                  )}
-                </div>
-                <p className="mt-2 text-fog-dim">{job.oneLiner}</p>
-                <ul className="mt-4 space-y-2">
-                  {job.bullets.map((b) => (
-                    <li key={b} className="flex gap-3 text-sm leading-relaxed text-fog-dim">
-                      <span className="mt-2 h-1 w-1 shrink-0 bg-amber" aria-hidden />
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.li>
+        <ol className="mt-6 space-y-4">
+          {experience.map((job) => (
+            <RoleCard key={`${job.org}-${job.period}`} job={job} reduce={reduce} />
           ))}
         </ol>
       </div>
     </section>
+  );
+}
+
+function RoleCard({ job, reduce }: { job: ExperienceItem; reduce: boolean | null }) {
+  const ref = useRef<HTMLLIElement>(null);
+  const [ready, setReady] = useState(false);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start 0.55"],
+  });
+  const rotateX = useTransform(scrollYProgress, [0, 1], [4, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [18, 0]);
+  const groups = job.groups ?? [];
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  return (
+    <li ref={ref} className="[perspective:1100px]">
+      <motion.article
+        className="card-hover surface origin-top p-5 sm:p-6"
+        style={reduce === false && ready ? { rotateX, y } : undefined}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <p className="role-mark">{job.role}</p>
+          <p className="meta-date text-amber">{job.period}</p>
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          {job.orgUrl ? (
+            <a
+              href={job.orgUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="heading-card underline decoration-amber/50 underline-offset-4 hover:text-amber"
+            >
+              {job.org}
+            </a>
+          ) : (
+            <h3 className="heading-card">{job.org}</h3>
+          )}
+          {job.place ? <p className="text-secondary text-fog-dim">{job.place}</p> : null}
+        </div>
+
+        <p className="text-secondary mt-2 max-w-3xl text-fog">{job.oneLiner}</p>
+
+        {groups.length > 0 ? (
+          <div className="mt-4 space-y-3">
+            {groups.map((group) => (
+              <div key={group.label}>
+                <h4 className="text-secondary font-semibold text-amber">{group.label}</h4>
+                <ul className="mt-1">
+                  {group.bullets.map((bullet) => (
+                    <li key={bullet} className="text-body flex gap-2 py-0.5 leading-snug text-fog">
+                      <span className="mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full bg-amber" aria-hidden />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ul className="mt-3">
+            {job.bullets.map((bullet) => (
+              <li key={bullet} className="text-body flex gap-2 py-0.5 leading-snug text-fog">
+                <span className="mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full bg-amber" aria-hidden />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </motion.article>
+    </li>
   );
 }

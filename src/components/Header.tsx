@@ -1,94 +1,128 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ResumeIcon, WhatsAppIcon } from "@/components/LinkIcons";
 import { site } from "@/lib/site";
 
 const links = [
-  { href: "/#work", label: "Work" },
+  { href: "/#about", label: "About" },
   { href: "/#experience", label: "Experience" },
-  { href: "/#stack", label: "Stack" },
-  { href: "/contact/", label: "Contact" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const barRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
+    if (!open) return;
+
+    const startY = window.scrollY;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    const onPointer = (event: PointerEvent) => {
+      if (!barRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onScroll = () => {
+      if (Math.abs(window.scrollY - startY) > 12) setOpen(false);
+    };
+
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [open]);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors ${
-        scrolled ? "border-b border-line bg-ink/90 backdrop-blur-md" : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
-        <Link href="/" className="group flex items-baseline gap-2">
-          <span className="font-serif text-2xl tracking-tight text-fog group-hover:text-white">
-            {site.shortName}
-          </span>
-          <span className="hidden font-mono text-xs uppercase tracking-[0.18em] text-fog-dim sm:inline">
-            AI Engineer
-          </span>
-        </Link>
-
-        <nav className="hidden items-center gap-1 md:flex">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="px-3 py-2 font-mono text-xs uppercase tracking-[0.14em] text-fog-dim transition-colors hover:text-amber"
-            >
-              {l.label}
-            </a>
-          ))}
-          <a
-            href={site.resumePath}
-            className="ml-3 border border-amber/40 px-3 py-2 font-mono text-xs uppercase tracking-[0.14em] text-amber transition-colors hover:bg-amber hover:text-ink"
+    <header ref={barRef} className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
+      <div className="relative mx-auto flex w-full max-w-3xl justify-center">
+        <div className="nav-pill flex w-full items-center gap-1 rounded-full px-2 py-1.5 backdrop-blur-md md:px-3">
+          <Link
+            href="/"
+            className="shrink-0 px-3 font-serif text-lg leading-none tracking-tight"
+            onClick={() => setOpen(false)}
           >
-            Resume
-          </a>
-        </nav>
+            <span className="text-white">St.</span>{" "}
+            <span className="text-amber">Warish</span>
+          </Link>
 
-        <button
-          type="button"
-          aria-label="Toggle menu"
-          className="border border-line px-3 py-2 font-mono text-xs uppercase tracking-widest text-fog md:hidden"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? "Close" : "Menu"}
-        </button>
-      </div>
-
-      {open && (
-        <div className="border-t border-line bg-ink px-5 py-4 md:hidden">
-          <div className="flex flex-col gap-2">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="py-2 font-mono text-sm uppercase tracking-[0.14em] text-fog"
-                onClick={() => setOpen(false)}
-              >
-                {l.label}
+          <nav className="mx-auto hidden items-center md:flex">
+            {links.map((item) => (
+              <a key={item.href} href={item.href} className="nav-link">
+                {item.label}
               </a>
             ))}
+          </nav>
+
+          <div className="ml-auto flex shrink-0 items-center gap-1 md:ml-0">
             <a
-              href={site.resumePath}
-              className="py-2 font-mono text-sm uppercase tracking-[0.14em] text-amber"
-              onClick={() => setOpen(false)}
+              href={site.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="nav-link h-9 w-9 justify-center px-0"
             >
-              Resume
+              <WhatsAppIcon />
             </a>
+            <a href={site.resumePath} className="nav-link gap-1.5 normal-case tracking-normal">
+              <ResumeIcon />
+              <span>Resume</span>
+            </a>
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls="site-menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-fog md:hidden"
+              onClick={() => setOpen((value) => !value)}
+            >
+              {open ? <CloseIcon /> : <MenuIcon />}
+            </button>
           </div>
         </div>
-      )}
+
+        {open ? (
+          <nav
+            id="site-menu"
+            className="nav-pill absolute inset-x-0 top-14 rounded-2xl px-3 py-2 md:hidden"
+          >
+            {links.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="nav-link min-h-11 w-full justify-start text-base normal-case tracking-normal"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        ) : null}
+      </div>
     </header>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
   );
 }

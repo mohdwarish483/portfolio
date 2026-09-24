@@ -2,14 +2,14 @@
 slug: industrial-ai-systems
 title: Industrial AI Systems
 subtitle: Anomaly copilots, video QA, and LangGraph analytics at Eizen
-outcomeMetric: Alert → case → text-to-query loop for manufacturing and ops
+outcomeMetric: Alert, case, and text-to-query loop for manufacturing and ops
 role: AI Engineer
 org: Eizen.AI
 orgUrl: https://eizen.ai/
 dateStart: 2024-04
 dateEnd: 2025-04
-featured: true
-order: 3
+featured: false
+order: 6
 status: proprietary-summary
 stack:
   - LangGraph
@@ -17,7 +17,37 @@ stack:
   - RAG
   - YOLO
   - OpenAI
-  - Time-series ML
+problem:
+  - Time-series alerts and video QA stay noise until someone opens a case and can query the history.
+  - The loop is detect, raise a case, explain it, then query without rewatching the video.
+built:
+  - Forecasting and anomaly models that feed root-cause analysis.
+  - LangGraph copilots with DeepSeek and RAG for summarization and analytics.
+  - YOLO video QA for chip manufacturing, with cases on material and startkit delays.
+  - Text-to-query over stored event summaries.
+  - Unsupervised known-unknown activity detection on surveillance video.
+pipeline:
+  - label: Telemetry
+    detail: Time-series anomaly detection on sensors and lines.
+  - label: Video
+    detail: YOLO video QA on cameras.
+  - label: Cases
+    detail: Both paths raise cases.
+  - label: Store
+    detail: Event summaries are kept for later questions.
+  - label: Agents
+    detail: LangGraph summarizes, finds root cause, and runs analytics with RAG.
+  - label: Query
+    detail: Text questions over the incident corpus.
+results:
+  - label: Anomaly path
+    detail: Detection aimed at root cause, not only a raw score.
+  - label: Copilots
+    detail: LangGraph, DeepSeek, and RAG.
+  - label: Video QA
+    detail: YOLO events raise manufacturing cases.
+  - label: Query
+    detail: Text-to-query on stored incident summaries.
 links:
   live: https://eizen.ai/
   repo: null
@@ -27,100 +57,14 @@ nda:
   blocked:
     - customer plant footage and defect imagery
     - production model weights and thresholds
-    - therapist-agent conversation logs (sensitive — omit from primary narrative)
   sanitizedProof:
-    - architecture diagram: sensor/video → anomaly → LangGraph copilots → case management
-    - synthetic alert timeline (fake line IDs) with text-to-query examples
-    - YOLO QA stills with synthetic overlays (no real chips/PHI)
-    - agent graph for summarization / RCA / analytics nodes
+    - architecture from sensor and video into cases and copilots
+    - synthetic alert timeline
 seoDescription: >-
   At Eizen, built time-series anomaly detection, LangGraph multi-agent copilots,
   and YOLO video QA with case-management alerts and text-to-query incident analysis.
 ---
 
-# Industrial AI Systems
-
-**Outcome:** Turned raw anomalies and video events into copilots that summarize, diagnose, and answer text queries—wired into case management for the plant floor.
-
-One combined case study for Eizen work: forecasting/anomaly detection, LangGraph analytical agents, and video QA—not three competing portfolio cards.
-
-## Problem
-
-Ops teams drown in alerts. Time-series models flag irregularities; video QA catches line delays; neither becomes a decision unless someone stitches root cause, timeline, and ownership. The constraint is **closed-loop ops**: detect → raise a case → explain in language operators trust → query history without rewatching hours of video.
-
-Sensitive side work (therapy-style agents) stays out of the primary story; summarize elsewhere or omit.
-
-## Approach
-
-I owned three connected systems:
-
-1. **Time-series forecasting & anomaly detection** — diagnose irregularities and surface root-cause signals for operational transparency
-2. **LangGraph multi-agent copilots** — DeepSeek + RAG over anomaly data for real-time summarization and analytics (LLMs as analytical copilots, not chat toys)
-3. **Video QA for chip manufacturing** — **YOLO**-based detection of startkit/material delays; auto-raise cases; store event summaries; enable **text-to-query** over incidents with OpenAI
-
-Secondary: unsupervised “known-unknown” activity detection on surveillance video for real-time anomalous-behavior alerts in dynamic environments.
-
-## System
-
-```
- Sensors / lines          Cameras / video
-        │                        │
-        ▼                        ▼
- Time-series anomaly        YOLO video QA
-        │                        │
-        └──────────┬─────────────┘
-                   ▼
-            Case management
-                   │
-                   ▼
-         Event summaries store
-                   │
-         ┌─────────┴─────────┐
-         ▼                   ▼
-  LangGraph agents      Text-to-query
-  (summarize / RCA /    (OpenAI over
-   analytics + RAG)      incident corpus)
-```
-
-**Suggested artifact:** dual-ingest diagram (telemetry + video) into one case/copilot plane; optional scrubber of alert → case → query.
-
-## What I built
-
-- Engineered forecasting and anomaly models that feed **root-cause analysis**, not only binary alarms
-- Developed **LangGraph** multi-agent systems with **DeepSeek** and **RAG** for summarization and BI-style analytics on anomaly streams
-- Built video QA for manufacturing with **YOLO**; integrated case management to auto-raise alerts on material/startkit delays
-- Stored and processed event summaries so operators can **query video incidents in text**
-- Implemented unsupervised known-unknown activity detection for surveillance anomaly alerts
-
-## Results
-
-| Area | Result | Notes |
-|------|--------|-------|
-| Anomaly → insight | RCA-oriented detection | Transparency for ops, not raw score dumps |
-| Copilots | LangGraph + DeepSeek + RAG | Multi-agent analytical path |
-| Video QA | YOLO → case alerts | Chip manufacturing line delays |
-| Queryability | Text-to-query on incidents | OpenAI over stored event summaries |
-| Surveillance | Known-unknown detection | Real-time anomalous behavior alerts |
-
-Customer-specific precision/recall and plant throughput impact are **proprietary**. Publish methodology + synthetic examples; avoid invented “+X% yield” claims.
-
-## Demo & proof (NDA gaps)
-
-| Gap | Sanitized substitute |
-|-----|----------------------|
-| Real production video | Synthetic line timeline + fake case IDs; YOLO boxes on non-customer stock or generated frames |
-| Internal LangGraph prompts | Agent graph (summarizer / RCA / analyst) with tool list only |
-| Therapist agent | **Omit from featured case**; if asked in interview: one-line “prior conversational agent experiment,” no screenshots |
-| Weights / thresholds | Architecture one-pager + “what I’d measure next” eval plan |
-
-## Engineering notes
-
-1. **Alerts without cases are noise:** Coupling YOLO events to case management forced the model output to carry ownership fields operators could act on.
-2. **RAG over incident summaries beats raw video tokens:** Text-to-query worked once events were normalized; feeding full video embeddings was costlier and harder to audit.
-3. **What I’d do next:** Offline eval set of golden incidents (alert correctness, summary faithfulness, query answerability); Phoenix/LangSmith traces for the LangGraph path as a portfolio observability still.
-
-## Links
-
-- Org: [Eizen.AI](https://eizen.ai/)
-- Repo: proprietary summary only
-- Related: Voice AI Framework (production agent runtime); Multi-agent PM (public orchestration twin)
+- Customer footage, weights, and thresholds stay internal.
+- No public yield or precision figure.
+- SRE voice agents, Vantara vision, and chip QA are on the Experience cards.
